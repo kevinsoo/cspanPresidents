@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(tidyverse)\nlibrary(ggthemes)\n\n# read\ndf <- read.csv(file=\"presidents_qualtrics.csv\")\ndf$User <- c(1:nrow(df))\nuser <- df %>% select(User, Age:GovernmentViews)\n\n# get individual clusters\nwt <- df %>% select(User, FactPercent1, Similarity1, Quality1, Commonalities1)\nwt$Group <- \"War-timers\"\nas <- df %>% select(User, FactPercent2, Similarity2, Quality2, Commonalities2)\nas$Group <- \"All-stars\"\nexp <- df %>% select(User, FactPercent3, Similarity3, Quality3, Commonalities3)\nexp$Group <- \"Expansionists\"\nsd <- df %>% select(User, FactPercent4, Similarity4, Quality4, Commonalities4)\nsd$Group <- \"Social Democrats\"\nunr <- df %>% select(User, FactPercent5, Similarity5, Quality5, Commonalities5)\nunr$Group <- \"Unremarkables\"\ngop <- df %>% select(User, FactPercent6, Similarity6, Quality6, Commonalities6)\ngop$Group <- \"Republicans\"\noth <- df %>% select(User, FactPercent7, Similarity7, Quality7, Commonalities7)\noth$Group <- \"The Others\"\n\n# rename clusters\ncolnames(wt) <- c(\"User\", \"FactPercent\", \"Similarity\", \"Quality\", \"Commonalities\", \"Group\")\ncolnames(as) <- c(\"User\", \"FactPercent\", \"Similarity\", \"Quality\", \"Commonalities\", \"Group\")\ncolnames(exp) <- c(\"User\", \"FactPercent\", \"Similarity\", \"Quality\", \"Commonalities\", \"Group\")\ncolnames(sd) <- c(\"User\", \"FactPercent\", \"Similarity\", \"Quality\", \"Commonalities\", \"Group\")\ncolnames(unr) <- c(\"User\", \"FactPercent\", \"Similarity\", \"Quality\", \"Commonalities\", \"Group\")\ncolnames(gop) <- c(\"User\", \"FactPercent\", \"Similarity\", \"Quality\", \"Commonalities\", \"Group\")\ncolnames(oth) <- c(\"User\", \"FactPercent\", \"Similarity\", \"Quality\", \"Commonalities\", \"Group\")\n\n# combine data\ndf <- rbind(wt, as, exp, sd, unr, gop, oth)\nqualtrics.df <- merge(user, df)\nqualtrics.df$Group <- factor(qualtrics.df$Group, levels=c(\"War-timers\", \"All-stars\", \"Expansionists\", \"Social Democrats\", \"Unremarkables\", \"Republicans\", \"The Others\"))\nsave(qualtrics.df, file=\"qualtricsData.Rda\")\n\n# plot data\nqual <- qualtrics.df %>% group_by(Group) %>% \n    summarise(N=n(), Sim = mean(Similarity), SimSE = sd(Similarity)/sqrt(N), \n              Fame = mean(FactPercent), FameSE = sd(FactPercent)/sqrt(N))\n\n# plot basic data\nqual$Group <- as.factor(qual$Group)\nqual$Group <- factor(qual$Group, levels=c(\"War-timers\", \"All-stars\", \"Expansionists\", \"Social Democrats\", \"Unremarkables\", \"Republicans\", \"The Others\"))\n\n",
+    "created" : 1491184364525.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1177788111",
+    "id" : "DF6AF001",
+    "lastKnownWriteTime" : 1491186471,
+    "last_content_update" : 1491186471416,
+    "path" : "~/Box Sync/Personal/cspanPresidents/02_qualtricsAnalysis.R",
+    "project_path" : "02_qualtricsAnalysis.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
